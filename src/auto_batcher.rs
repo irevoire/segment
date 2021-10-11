@@ -44,6 +44,7 @@ use crate::{
 ///
 /// If this delay is a concern, it is recommended that you periodically flush
 /// the batcher on your own by calling [Self::flush].
+#[derive(Clone)]
 pub struct AutoBatcher {
     client: HttpClient,
     batcher: Batcher,

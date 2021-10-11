@@ -326,7 +326,7 @@ macro_rules! into {
         }
     };
     ($(from $from:ident into $for:ident),+ $(,)?) => {
-        $( // here we iterate element per element to avoid recursion
+        $(
             into!{from $from into $for}
         )+
     };
