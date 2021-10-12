@@ -26,6 +26,8 @@
 //!   docs](https://segment.com/docs/spec/common/#integrations) for how to use
 //!   this field.
 
+use std::fmt::Display;
+
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
@@ -320,6 +322,17 @@ pub enum User {
         #[serde(rename = "anonymousId")]
         anonymous_id: String,
     },
+}
+
+impl Display for User {
+    /// Display a `UserId`. If he has both an `anonymous_id` and a `user_id` we display the `user_id`
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            User::UserId { user_id } => write!(f, "{}", user_id),
+            User::AnonymousId { anonymous_id } => write!(f, "{}", anonymous_id),
+            User::Both { user_id, .. } => write!(f, "{}", user_id),
+        }
+    }
 }
 
 impl Default for User {
