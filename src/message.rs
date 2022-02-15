@@ -28,9 +28,9 @@
 
 use std::fmt::Display;
 
-use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
+use time::OffsetDateTime;
 
 /// An enum containing all values which may be sent to Segment's tracking API.
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
@@ -59,8 +59,11 @@ pub struct Identify {
     pub traits: Value,
 
     /// The timestamp associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub timestamp: Option<DateTime<Utc>>,
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        with = "time::serde::rfc3339::option"
+    )]
+    pub timestamp: Option<OffsetDateTime>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -92,8 +95,11 @@ pub struct Track {
     pub properties: Value,
 
     /// The timestamp associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub timestamp: Option<DateTime<Utc>>,
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        with = "time::serde::rfc3339::option"
+    )]
+    pub timestamp: Option<OffsetDateTime>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -125,8 +131,11 @@ pub struct Page {
     pub properties: Value,
 
     /// The timestamp associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub timestamp: Option<DateTime<Utc>>,
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        with = "time::serde::rfc3339::option"
+    )]
+    pub timestamp: Option<OffsetDateTime>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -158,8 +167,11 @@ pub struct Screen {
     pub properties: Value,
 
     /// The timestamp associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub timestamp: Option<DateTime<Utc>>,
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        with = "time::serde::rfc3339::option"
+    )]
+    pub timestamp: Option<OffsetDateTime>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -192,8 +204,11 @@ pub struct Group {
     pub traits: Value,
 
     /// The timestamp associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub timestamp: Option<DateTime<Utc>>,
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        with = "time::serde::rfc3339::option"
+    )]
+    pub timestamp: Option<OffsetDateTime>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -223,8 +238,11 @@ pub struct Alias {
     pub previous_id: String,
 
     /// The timestamp associated with this message.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub timestamp: Option<DateTime<Utc>>,
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        with = "time::serde::rfc3339::option"
+    )]
+    pub timestamp: Option<OffsetDateTime>,
 
     /// Context associated with this message.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -281,7 +299,7 @@ pub enum BatchMessage {
 }
 
 impl BatchMessage {
-    pub(crate) fn timestamp_mut(&mut self) -> &mut Option<DateTime<Utc>> {
+    pub(crate) fn timestamp_mut(&mut self) -> &mut Option<OffsetDateTime> {
         match self {
             Self::Identify(identify) => &mut identify.timestamp,
             Self::Track(track) => &mut track.timestamp,

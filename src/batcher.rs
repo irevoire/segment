@@ -2,8 +2,8 @@
 
 use crate::message::{Batch, BatchMessage, Message};
 use crate::{Error, Result};
-use chrono::Utc;
 use serde_json::{Map, Value};
+use time::OffsetDateTime;
 
 const MAX_MESSAGE_SIZE: usize = 1024 * 32;
 const MAX_BATCH_SIZE: usize = 1024 * 512;
@@ -97,7 +97,7 @@ impl Batcher {
         let mut msg: BatchMessage = msg.into();
         let timestamp = msg.timestamp_mut();
         if self.auto_timestamp && timestamp.is_none() {
-            *timestamp = Some(Utc::now());
+            *timestamp = Some(OffsetDateTime::now_utc());
         }
         let size = serde_json::to_vec(&msg)?.len();
         if size > MAX_MESSAGE_SIZE {
