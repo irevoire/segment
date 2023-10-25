@@ -129,7 +129,7 @@ impl AutoBatcher {
     /// ```
     pub async fn flush(&mut self) -> Result<()> {
         let message = Message::Batch(Batch {
-            batch: std::mem::take(&mut self.batcher.buf),
+            batch: self.batcher.take(),
             context: self.batcher.context.clone(),
             integrations: None,
             extra: Map::default(),

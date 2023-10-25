@@ -113,6 +113,11 @@ impl Batcher {
         Ok(None)
     }
 
+    pub(crate) fn take(&mut self) -> Vec<BatchMessage> {
+        self.byte_count = 0;
+        std::mem::take(&mut self.buf)
+    }
+
     /// Consumes this batcher and converts it into a message that can be sent to
     /// Segment.
     pub fn into_message(self) -> Message {
