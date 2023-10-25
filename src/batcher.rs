@@ -81,6 +81,10 @@ impl Batcher {
         self.auto_timestamp = false;
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.buf.is_empty()
+    }
+
     /// Push a message into the batcher.
     ///
     /// Returns `Ok(None)` if the message was accepted and is now owned by the

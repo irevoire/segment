@@ -128,6 +128,10 @@ impl AutoBatcher {
     /// batcher.flush(); // .await
     /// ```
     pub async fn flush(&mut self) -> Result<()> {
+        if self.batcher.is_empty() {
+            return Ok(());
+        }
+
         let message = Message::Batch(Batch {
             batch: self.batcher.take(),
             context: self.batcher.context.clone(),
